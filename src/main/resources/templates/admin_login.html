@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Admin - ReservaTec</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body style="text-align: center; padding-top: 100px; font-family: Arial, sans-serif;">
+<h2>Acceso administrador - ReservaTec</h2>
+<div id="g_id_onload"
+     data-client_id="861236663472-sa3v01inonk082su43fo069hlfqfn77o.apps.googleusercontent.com"
+     data-context="signin"
+     data-ux_mode="popup"
+     data-callback="handleCredentialResponse"
+     data-auto_prompt="false">
+</div>
+<div class="g_id_signin"
+     data-type="standard"
+     data-size="large"
+     data-theme="outline"
+     data-text="sign_in_with"
+     data-shape="rectangular"
+     data-logo_alignment="left">
+</div>
+
+<script>
+    function handleCredentialResponse(response) {
+      const idToken = response.credential;
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = "/admin/validar";
+
+      const input = document.createElement("input");
+      input.type = "hidden";
+      input.name = "idToken";
+      input.value = idToken;
+
+      form.appendChild(input);
+      document.body.appendChild(form);
+      form.submit();
+    }
+</script>
+</body>
+</html>
