@@ -51,6 +51,8 @@ public class AdminWebController {
         }
 
         String email = googleIdToken.getPayload().getEmail();
+        String foto = (String) googleIdToken.getPayload().get("picture"); // ✅ Capturamos la foto
+
         Optional<Usuario> usuarioOpt = usuarioRepository.findByEmail(email);
 
         if (usuarioOpt.isEmpty() || !"ADMIN".equalsIgnoreCase(usuarioOpt.get().getRol())) {
@@ -59,19 +61,25 @@ public class AdminWebController {
         }
 
         Usuario usuario = usuarioOpt.get();
+
+        // ✅ Si la foto cambió o es null, la actualizamos
+        if (usuario.getFoto() == null || !usuario.getFoto().equals(foto)) {
+            usuario.setFoto(foto);
+            usuarioRepository.save(usuario);
+        }
+
         String jwt = jwtUtil.generarToken(usuario);
 
         Cookie cookie = new Cookie("admin_token", jwt);
         cookie.setHttpOnly(true);
         cookie.setPath("/admin");
         cookie.setMaxAge(3600);
-        // Opcional para seguridad extra:
         // cookie.setSecure(true); // usar solo si tienes HTTPS
-        // cookie.setDomain("tudominio.com"); // si aplica
 
         response.addCookie(cookie);
         response.sendRedirect("/admin/inicio");
     }
+
     // cookie.setSecure(true); // usar solo si tienes HTTPS
     // cookie.setDomain("tudominio.com"); // si aplica
 

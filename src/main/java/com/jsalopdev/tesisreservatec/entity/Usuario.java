@@ -1,10 +1,10 @@
 package com.jsalopdev.tesisreservatec.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
+@Table(name = "usuario")
 @Data
 public class Usuario {
 
@@ -12,7 +12,13 @@ public class Usuario {
     private String codigo;
 
     private String nombre;
+
     private String email;
-    private String carrera;
+
     private String rol;
+
+    private String carrera;
+
+    @Column(name = "foto")
+    private String foto;
 }

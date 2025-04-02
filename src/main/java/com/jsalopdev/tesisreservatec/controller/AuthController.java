@@ -49,9 +49,15 @@ public class AuthController {
 
             Usuario usuario = usuarioOpt.get();
 
-            // 🚫 Bloquear si el rol no es USER
+            // ❌ Bloquear si no es USER
             if (!"USER".equalsIgnoreCase(usuario.getRol())) {
                 return ResponseEntity.status(403).body("Acceso restringido solo para usuarios con rol USER");
+            }
+
+            // ✅ Guardar/actualizar la foto si es nueva
+            if (usuario.getFoto() == null || !usuario.getFoto().equals(foto)) {
+                usuario.setFoto(foto);
+                usuarioRepository.save(usuario);
             }
 
             String jwt = jwtUtil.generarToken(usuario);

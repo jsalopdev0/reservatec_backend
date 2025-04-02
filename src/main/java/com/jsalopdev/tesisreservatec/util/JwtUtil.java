@@ -61,4 +61,22 @@ public class JwtUtil {
         }
     }
 
+    public Claims obtenerClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public boolean validarToken(String token) {
+        try {
+            obtenerClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
 }
